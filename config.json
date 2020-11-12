@@ -54,6 +54,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "grade-school",
+      "uuid": "097edbd5-5c93-4d4f-a410-a38a5588f031",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		"arrays",
+		"lists",
+		"sorting"
+      ]
     }
   ]
 }
