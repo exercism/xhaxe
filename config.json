@@ -54,6 +54,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "gigasecond",
+      "uuid": "b1fb2914-6741-4478-b00c-2edfd31bb34d",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "dates"
+      ]
     }
   ]
 }
