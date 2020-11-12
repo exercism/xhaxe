@@ -10,6 +10,7 @@ class TestGen {
     static var exercise: String; 
     static var mainMethod: String;
     static var mainArgs: String;
+    static var shouldCheck: String;
     static var exerciseStubTmpl = new Template(
 "package;
 
@@ -51,6 +52,7 @@ class Test extends buddy.SingleSuite {
         exercise   = Sys.args()[0];
         mainMethod = Sys.args()[1];
         mainArgs   = Sys.args()[2];
+        shouldCheck   = Sys.args()[3];
 
         //pull in files from github
         var execute =
@@ -148,10 +150,14 @@ class Test extends buddy.SingleSuite {
 
                 var expected = processField(testCase.expected);
   
+                var testCriteria ='${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.${shouldCheck}(${expected});'; 
+                if (testCases.length != 0) {
+                    testCriteria = 'pending("Skipping");\n\t\t\t\t' + testCriteria;
+                }
                 testCases.push(                        
                     testCaseTmpl.execute( {
                       testCase: testCase.description,
-                      testCriteria: '${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.be(${expected});' 
+                      testCriteria: testCriteria 
                     })
                 );
             } else {
