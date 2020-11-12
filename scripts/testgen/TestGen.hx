@@ -44,8 +44,9 @@ class Test extends buddy.SingleSuite {
         var descriptionUrl     = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/description.md");
         var metaUrl            = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/metadata.yml");
         //check if no args are passed
-        if (Sys.args().length < 2) {
-            Sys.println("Failed to provide an exercise name.");
+        if (Sys.args().length < 4) {
+            Sys.println("Must provide an exercise name, main method, main args, and assert method!");
+            Sys.println("Example: haxe --run TestGen.hx acronym abbreviate \"phrase: String\" be");
             return;
         }
 
