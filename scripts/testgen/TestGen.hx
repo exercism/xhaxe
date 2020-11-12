@@ -110,13 +110,26 @@ class Test extends buddy.SingleSuite {
         readme.push("\n## Submitting Incomplete Solutions\nIt's possible to submit an incomplete solution so you can see how others have completed the exercise.");
 
         //Create README file
+        Sys.println("Creating README");
         File.saveContent('${dir}/README.md', readme.join("\n"));
 
         //create .meta/tests.toml
+        Sys.println("Creating .meta/tests.toml");
         File.saveContent('${dir}.meta/tests.toml', meta.join(""));
 
         //create Exercise.hx stub file 
-        File.saveContent('${dir}src/${toUpperCamel(exercise)}.hx', exerciseStubTmpl.execute( {
+        var exercisePath = 'src/${toUpperCamel(exercise)}.hx';
+        Sys.println("Creating " + exercisePath);
+        File.saveContent('${dir}${exercisePath}', exerciseStubTmpl.execute( {
+                exercise: toUpperCamel(exercise), 
+                mainMethod: mainMethod,
+                mainArgs: mainArgs 
+            } 
+        ));
+
+        //create empty Example.hx
+        Sys.println('Creating src/Example.hx');
+        File.saveContent('${dir}src/Example.hx', exerciseStubTmpl.execute( {
                 exercise: toUpperCamel(exercise), 
                 mainMethod: mainMethod,
                 mainArgs: mainArgs 
@@ -124,6 +137,7 @@ class Test extends buddy.SingleSuite {
         ));
 
         //create Test.hx file
+        Sys.println('Creating test/Test.hx');
         File.saveContent('${dir}test/Test.hx', testTmpl.execute( {
                 exercise: toUpperCamel(exercise, " "), 
                 testCases: testCases.join("")
@@ -131,7 +145,12 @@ class Test extends buddy.SingleSuite {
         ));
 
         //copy test.hxml from hello-world
+        Sys.println('Copying test.hxml');
         File.copy('${exercisesDir}hello-world/test.hxml', '${dir}test.hxml');
+
+
+        Sys.println("Generation Successful");
+        Sys.println("Don't forget to update config.json!");
     }
 
 
