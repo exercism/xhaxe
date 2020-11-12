@@ -1,0 +1,12 @@
+# Test Generator
+This script will help you port over an exercise from the [Problem Specifications Repo](https://github.com/exercism/problem-specifications)
+The script is run using Haxe's built in interpreter with the `--run` command.
+
+It takes 4 args:
+1. The exercise name exactly as it's found in the Problem Spec repo.
+2. A name for the main method that will be tested; you can just use what's in the "property" field in the canonical-data.json. e.g.: `"property":"abbreviate"` 
+3. A comma delimited string of the arguments that the main method will take. This will match the inputs field in canonical-data.json. e.g.: `"phrase": "Portable Network Graphics"` so it will need a phrase: String
+4. A buddy assert method, generally you will use `be` for most things or `containExactly` for Array answers.  More assert methods can be found [HERE](https://github.com/ciscoheat/buddy#should-assertions).
+
+An example to generate the acronym exercise:
+```haxe --run TestGen.hx acronym abbreviate "phrase: String" be```
