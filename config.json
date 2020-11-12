@@ -54,6 +54,19 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "nucleotide-count",
+      "uuid": "1ed5068c-7998-404d-8159-d6df5a5610b2",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		"strings",
+		"enumerations",
+		"dictionaries",
+		"exception_handling"
+      ]
     }
   ]
 }
