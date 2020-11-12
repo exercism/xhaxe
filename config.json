@@ -2,9 +2,9 @@
   "language": "Haxe",
   "active": false,
   "blurb": "Haxe is an open source high-level strictly-typed programming language with a fast optimizing cross-compiler. Haxe can build cross-platform applications targeting JavaScript, C++, C#, Java, JVM, Python, Lua, PHP, Flash, and allows access to each platform's native capabilities. Haxe has its own VMs (HashLink and NekoVM) but can also run in interpreted mode. Code written in Haxe can be compiled to any target Haxe supports.",
-   "online_editor": {	
-    "indent_style": "space",	
-    "indent_size": 4	
+  "online_editor": {
+    "indent_style": "space",
+    "indent_size": 4
   },
   "checklist_issue": 2,
   "test_pattern": "test.*Test[.]hx",
@@ -53,6 +53,16 @@
       "topics": [
         "filtering",
         "strings"
+      ]
+    },
+    {
+      "slug": "armstrong-numbers",
+      "uuid": "3afae356-d29c-4dfa-b2ac-3311a07eb72c",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "math"
       ]
     }
   ]
