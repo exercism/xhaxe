@@ -4,6 +4,8 @@ import sys.io.File;
 import sys.FileSystem;
 import sys.Http;
 
+using StringTools;
+
 class TestGen {
     static var exercise: String; 
     static var mainMethod: String;
@@ -83,20 +85,29 @@ class Test extends buddy.SingleSuite {
         var meta = new Array<String>();
         meta.push("[canonical-tests]\n\n");
 
-        //create string for Test.hx
-        var testHx = ""; 
-        //create string for Exercise.hx
-        var exerciseHx = ""; 
-
         var problemSpec = Json.parse(dataJson);
         var testCases = new Array<String>();
         //populate test cases
         generateTests(cast (problemSpec.cases, Array<Dynamic>), testCases, meta); 
       
-        //Create README file
-        //Add title of exercise
+
+        //create String array for README; add exercise as title 
+        var readme = new Array<String>();
+        readme.push('# ${toUpperCamel(exercise, " ")}');
         //Copy descriptionMd to README
-        //copy metaYml Source info to README
+        readme.push(descriptionMd);
+        //extremely naive metadata yaml parsing
+        var splitYml = metaYml.split("\n");
+        if (splitYml.length > 3) {
+            readme.push('## Source');
+            readme.push(splitYml[2].split("source:")[1].replace("\"", "").trim());
+            readme.push(splitYml[3].split("source_url:")[1].replace("\"", "").trim());
+        }
+        //Add incomplete blurb
+        readme.push("\n## Submitting Incomplete Solutions\nIt's possible to submit an incomplete solution so you can see how others have completed the exercise.");
+
+        //Create README file
+        File.saveContent('${dir}/README.md', readme.join("\n"));
 
         //create .meta/tests.toml
         File.saveContent('${dir}.meta/tests.toml', meta.join(""));
@@ -118,8 +129,6 @@ class Test extends buddy.SingleSuite {
 
         //copy test.hxml from hello-world
         File.copy('${exercisesDir}hello-world/test.hxml', '${dir}test.hxml');
-
-
     }
 
 
@@ -134,10 +143,10 @@ class Test extends buddy.SingleSuite {
                 //iterate over inputs and add them to array to join later
                 var inputs = new Array<Dynamic>();
                 for (obj in Reflect.fields(testCase.input)) {
-                    inputs.push(wrapString(Reflect.field(testCase.input, obj)));
+                    inputs.push(processField(Reflect.field(testCase.input, obj)));
                 }
 
-                var expected = wrapString(testCase.expected);
+                var expected = processField(testCase.expected);
   
                 testCases.push(                        
                     testCaseTmpl.execute( {
@@ -151,18 +160,46 @@ class Test extends buddy.SingleSuite {
             }
         }
     }
-    private static function wrapString(obj: Dynamic): Dynamic {
+    private static function processField(obj: Dynamic, ?parent: String, ?tabCount: Int = 4): Dynamic {
         var type = Type.getClassName(Type.getClass(obj));
-        if (type == "String") return '\"${obj}\"';
-        else if (type == "Array") {
-            var temp = new Array<Dynamic>();
-            for (child in cast(obj, Array<Dynamic>)) {
-                temp.push(wrapString(child));
-            } 
-            return temp;
-        } 
-        else return obj;
+        if (type == null) {
+           type = Type.getClassName(Type.getClass(Reflect.fields(obj))); 
+           if (type == "Array") {
+               type = "Object";
+           } 
+           if (obj == null) {
+               type = "Null";
+           }           
+           if ((type == "Object" || type == "Array") && type == parent) {
+               tabCount += 1;
+           }
+        }
+        // trace(obj + ": " + type);
+        var indent =
+            (count) -> {
+                var temp = "";
+                for(i in 0...count) temp += "\t";
+                return temp;
+            }
+
+        switch (type) {
+            case "Array":  
+                var temp = new Array<Dynamic>();
+                for (child in cast(obj, Array<Dynamic>)) {
+                    temp.push('${indent(tabCount + 1)}${processField(child, type, tabCount)}');
+                } 
+                return '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
+            case "Object": 
+                var temp = new Array<Dynamic>();
+                for (field in Reflect.fields(obj)) {
+                    temp.push('${indent(tabCount + 1)}${field}: ${processField(Reflect.field(obj, field), type, tabCount))}');
+                }
+                return '{\n${temp.join(",\n")}\n${indent(tabCount)}}';
+            case "String": return '\"${obj}\"';
+            case _ : return obj;
+        }
     }
+
     private static function toUpperCamel(string: String, ?seperator: String = ""): String {
         //all multiWord problems uses - as word seperator
         var words = string.split("-");
