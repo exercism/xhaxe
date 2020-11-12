@@ -54,6 +54,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "space-age",
+      "uuid": "35d0e74f-29fe-4acb-83e2-c9c800e48709",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		"enumerations",
+		"dictionaries",
+		"floating_point_numbers"
+      ]
     }
   ]
 }
