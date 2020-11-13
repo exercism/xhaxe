@@ -54,6 +54,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "resistor-color",
+      "uuid": "4b023d93-e8ef-4e4c-8535-d27e5f873c62",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "arrays"
+      ]
     }
   ]
 }
