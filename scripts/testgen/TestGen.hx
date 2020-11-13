@@ -8,8 +8,6 @@ using StringTools;
 
 class TestGen {
     static var exercise: String; 
-    // static var mainMethod: String;
-    static var mainArgs: String;
     static var exerciseStubTmpl = new Template(
 "package;
 
@@ -29,6 +27,7 @@ class ::exercise:: {
 
 using buddy.Should;
 
+//Created by testgen.hx
 class Test extends buddy.SingleSuite {
     public function new() {
         ::stories::
@@ -53,15 +52,12 @@ class Test extends buddy.SingleSuite {
         var descriptionUrl     = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/description.md");
         var metaUrl            = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/metadata.yml");
         //check if no args are passed
-        if (Sys.args().length < 3) {
-            Sys.println("Must provide an exercise name, main method, and main args!");
-            Sys.println("Example: haxe --run TestGen.hx acronym abbreviate \"phrase: String\"");
+        if (Sys.args().length < 1) {
+            Sys.println("An exercise is required.");
             return;
         }
 
         exercise       = Sys.args()[0];
-        // mainMethod     = Sys.args()[1];
-        mainArgs       = Sys.args()[2];
 
         //pull in files from github
         var execute =
