@@ -54,6 +54,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "robot-name",
+      "uuid": "cf67e341-7092-4cf7-8e41-8c6a6dc6390a",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "classes",
+        "strings",
+		"randomness"
+      ]
     }
   ]
 }
