@@ -10,7 +10,6 @@ class TestGen {
     static var exercise: String; 
     static var mainMethod: String;
     static var mainArgs: String;
-    static var shouldAssert: String;
     static var exerciseStubTmpl = new Template(
 "package;
 
@@ -50,16 +49,15 @@ class Test extends buddy.SingleSuite {
         var descriptionUrl     = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/description.md");
         var metaUrl            = new Template("https://raw.githubusercontent.com/exercism/problem-specifications/master/exercises/::exercise::/metadata.yml");
         //check if no args are passed
-        if (Sys.args().length < 4) {
-            Sys.println("Must provide an exercise name, main method, main args, and assert method!");
-            Sys.println("Example: haxe --run TestGen.hx acronym abbreviate \"phrase: String\" be");
+        if (Sys.args().length < 3) {
+            Sys.println("Must provide an exercise name, main method, and main args!");
+            Sys.println("Example: haxe --run TestGen.hx acronym abbreviate \"phrase: String\"");
             return;
         }
 
         exercise       = Sys.args()[0];
         mainMethod     = Sys.args()[1];
         mainArgs       = Sys.args()[2];
-        shouldAssert   = Sys.args()[3];
 
         //pull in files from github
         var execute =
@@ -193,13 +191,18 @@ class Test extends buddy.SingleSuite {
                 //iterate over inputs and add them to array to join later
                 var inputs = new Array<Dynamic>();
                 for (obj in Reflect.fields(testCase.input)) {
-                    inputs.push(processField(Reflect.field(testCase.input, obj)));
+                    inputs.push(processField(Reflect.field(testCase.input, obj)).obj);
                 }
 
                 var expected = processField(testCase.expected);
   
                 //should probably change the assert based on return type from processField 
-                var testCriteria ='${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.${shouldAssert}(${expected});'; 
+                var shouldAssert: String;
+                switch(expected.type) {
+                    case "Array": shouldAssert = "containExactly";
+                    case _: shouldAssert = "be";  
+                }
+                var testCriteria ='${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.${shouldAssert}(${expected.obj});'; 
                 if (testCases.get(story).length != 0) {
                     testCriteria = 'pending("Skipping");\n\t\t\t\t' + testCriteria;
                 }
@@ -215,7 +218,7 @@ class Test extends buddy.SingleSuite {
             }
         }
     }
-    private static function processField(obj: Dynamic, ?parent: String, ?tabCount: Int = 4): Dynamic {
+    private static function processField(obj: Dynamic, ?parent: String, ?tabCount: Int = 4): { type: String, obj: Dynamic } {
         var type = Type.getClassName(Type.getClass(obj));
         // trace(obj + ": " + type);
         if (type == null) {
@@ -250,21 +253,22 @@ class Test extends buddy.SingleSuite {
                 return temp;
             }
 
-        switch (type) {
-            case "Array":  
-                var temp = new Array<Dynamic>();
-                for (child in cast(obj, Array<Dynamic>)) {
-                    temp.push('${indent(tabCount + 1)}${processField(child, type, tabCount)}');
-                } 
-                return '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
-            case "Object": 
-                var temp = new Array<Dynamic>();
-                for (field in Reflect.fields(obj)) {
-                    temp.push('${indent(tabCount + 1)}${field}: ${processField(Reflect.field(obj, field), type, tabCount))}');
-                }
-                return '{\n${temp.join(",\n")}\n${indent(tabCount)}}';
-            case "String": return '\"${obj}\"';
-            case _ : return obj;
+        return { type: type, obj: switch (type) {
+                case "Array":  
+                    var temp = new Array<Dynamic>();
+                    for (child in cast(obj, Array<Dynamic>)) {
+                        temp.push('${indent(tabCount + 1)}${processField(child, type, tabCount).obj}');
+                    } 
+                    '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
+                case "Object": 
+                    var temp = new Array<Dynamic>();
+                    for (field in Reflect.fields(obj)) {
+                        temp.push('${indent(tabCount + 1)}${field}: ${processField(Reflect.field(obj, field), type, tabCount)).obj}');
+                    }
+                    '{\n${temp.join(",\n")}\n${indent(tabCount)}}';
+                case "String": '\"${obj}\"';
+                case _ : obj;
+            }
         }
     }
 
