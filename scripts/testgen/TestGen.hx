@@ -8,16 +8,20 @@ using StringTools;
 
 class TestGen {
     static var exercise: String; 
-    static var mainMethod: String;
+    // static var mainMethod: String;
     static var mainArgs: String;
     static var exerciseStubTmpl = new Template(
 "package;
 
 class ::exercise:: {
-    public static function ::mainMethod::(::mainArgs::): String {
-        throw \"Not Implemented\"; // Delete this statement and write your own implementation.
-    }
+    ::methods:: 
 }"
+    );
+
+    static var methodsTmpl = new Template(
+    "public static function ::method::(::args::): ::returnType:: {
+        throw \"Not Implemented\"; // Delete this statement and write your own implementation.
+    }"
     );
 
     static var testTmpl = new Template(
@@ -56,7 +60,7 @@ class Test extends buddy.SingleSuite {
         }
 
         exercise       = Sys.args()[0];
-        mainMethod     = Sys.args()[1];
+        // mainMethod     = Sys.args()[1];
         mainArgs       = Sys.args()[2];
 
         //pull in files from github
@@ -95,9 +99,16 @@ class Test extends buddy.SingleSuite {
         var problemSpec = Json.parse(dataJson);
         var testCases = new Map<String, Array<String>>();
         var stories = new Array<String>();
+        var methods = new Map<String, { order: Int, method: String} >();
         //populate test cases
-        generateTests(cast (problemSpec.cases, Array<Dynamic>), stories, testCases, meta); 
+        generateTests(cast (problemSpec.cases, Array<Dynamic>), methods, stories, testCases, meta); 
       
+        var renderedMethods = new Array<String>();
+        for (key in methods.keys()) {
+            var method = methods.get(key); 
+            renderedMethods.insert(method.order, method.method);
+        }
+
         for (i in 0...stories.length) {
             stories[i] = storyTmpl.execute( {
                     story: stories[i],
@@ -105,13 +116,6 @@ class Test extends buddy.SingleSuite {
                 }
             );
         }
-        // for (story in testCases.keys()) {
-        //     stories.push(storyTmpl.execute( {
-        //             story: story,
-        //             testCases: testCases.get(story).join("")
-        //         })
-        //     );
-        // }
 
         //create String array for README; add exercise as title 
         var readme = new Array<String>();
@@ -141,8 +145,7 @@ class Test extends buddy.SingleSuite {
         Sys.println("Creating " + exercisePath);
         File.saveContent('${dir}${exercisePath}', exerciseStubTmpl.execute( {
                 exercise: toUpperCamel(exercise), 
-                mainMethod: mainMethod,
-                mainArgs: mainArgs 
+                methods: renderedMethods.join("\n\n\t")
             } 
         ));
 
@@ -150,8 +153,7 @@ class Test extends buddy.SingleSuite {
         Sys.println('Creating src/Example.hx');
         File.saveContent('${dir}src/Example.hx', exerciseStubTmpl.execute( {
                 exercise: toUpperCamel(exercise), 
-                mainMethod: mainMethod,
-                mainArgs: mainArgs 
+                methods: renderedMethods.join("\n\n\t")
             } 
         ));
 
@@ -172,9 +174,10 @@ class Test extends buddy.SingleSuite {
     }
 
 
-    private static function generateTests(cases: Array<Dynamic>, stories: Array<String>, testCases: Map<String, Array<String>>, meta: Array<String>, ?story: String) {
+    private static function generateTests(cases: Array<Dynamic>, methods: Map<String, { order: Int, method: String}>, stories: Array<String>, testCases: Map<String, Array<String>>, meta: Array<String>, ?story: String) {
         for(testCase in cases) {
             if (testCase.cases == null) {
+                //if story does not exist make a new one
                 if (story == null) {
                     story = toUpperCamel(exercise, " ");
                 }
@@ -188,21 +191,55 @@ class Test extends buddy.SingleSuite {
                 //add uuid in double quotes = true to .meta/test.toml
                 meta.push('"${testCase.uuid}" = true\n\n');
 
+
+                var method = testCase.property; 
+
                 //iterate over inputs and add them to array to join later
                 var inputs = new Array<Dynamic>();
+                var types = new Array<String>();
+
                 for (obj in Reflect.fields(testCase.input)) {
-                    inputs.push(processField(Reflect.field(testCase.input, obj)).obj);
+                    var value = processField(Reflect.field(testCase.input, obj));
+                    inputs.push(value.obj);
+
+                    //need the types of inputs for newly found methods
+                    if (!methods.exists(method)) {
+                        types.push('${obj}: ${value.type}');
+                    }
                 }
 
+                
                 var expected = processField(testCase.expected);
   
-                //should probably change the assert based on return type from processField 
-                var shouldAssert: String;
-                switch(expected.type) {
-                    case "Array": shouldAssert = "containExactly";
-                    case _: shouldAssert = "be";  
+                //Check if the method exits otherwise execute template
+                //need to check if the type is a Generic Array and warn if this happens
+                //This warning may correct itself if the story has multiple cases
+                //and the first case happens check against an empty array.
+                if (!methods.exists(method) && expected.type != "Array") {
+                    var count = 0;
+                    for (method in methods.keys()) count++; 
+                    methods.set(method, {
+                            order: count,
+                            method: methodsTmpl.execute( {
+                                method: method,
+                                args: types.join(", "),
+                                returnType: expected.type
+                            })
+                        }
+                    );
+                } else if (expected.type == "Array") {
+                    Sys.println("WARNING: Unidentifiable generic found for method: " + method);
+                    Sys.println("Please verify that it was corrected!");
                 }
-                var testCriteria ='${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.${shouldAssert}(${expected.obj});'; 
+
+                var shouldAssert: String;
+                if (expected.type.startsWith("Array")) {
+                    shouldAssert = "containExactly";
+                } else {
+                    shouldAssert = "be";
+                }
+                
+                var testCriteria ='${toUpperCamel(exercise)}.${method}(${inputs.join(", ")}).should.${shouldAssert}(${expected.obj});'; 
                 if (testCases.get(story).length != 0) {
                     testCriteria = 'pending("Skipping");\n\t\t\t\t' + testCriteria;
                 }
@@ -214,7 +251,7 @@ class Test extends buddy.SingleSuite {
                 );
             } else {
                 //if case has more cases continute to traverse
-                generateTests(cast (testCase.cases, Array<Dynamic>), stories, testCases, meta, testCase.description);
+                generateTests(cast (testCase.cases, Array<Dynamic>), methods, stories, testCases, meta, testCase.description);
             }
         }
     }
@@ -226,7 +263,11 @@ class Test extends buddy.SingleSuite {
             //this is pretty jank and should probably be refactored to use Std.isOfType
             var isNumeric = ~/^\d+$/;
             if (isNumeric.match('${obj}')) {
-                type = "Number";
+                if ('${obj}'.contains(".")) {
+                    type = "Float";
+                } else {
+                    type = "Int";
+                }
             }
             else if ('${obj}' == "true" || '${obj}' == "false") {
                 type = "Bool";
@@ -234,6 +275,7 @@ class Test extends buddy.SingleSuite {
             else {
                 type = Type.getClassName(Type.getClass(Reflect.fields(obj))); 
             }
+
             if (type == "Array") {
                type = "Object";
             } 
@@ -253,11 +295,12 @@ class Test extends buddy.SingleSuite {
                 return temp;
             }
 
-        return { type: type, obj: switch (type) {
+         obj = switch (type) {
                 case "Array":  
                     var temp = new Array<Dynamic>();
                     for (child in cast(obj, Array<Dynamic>)) {
                         var processed = processField(child, type, tabCount); 
+                        type = 'Array<${processed.type}>';
                         temp.push('${indent(tabCount + 1)}${processed.obj}');
                     } 
                     '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
@@ -266,13 +309,15 @@ class Test extends buddy.SingleSuite {
                     for (field in Reflect.fields(obj)) {
                         var value = Reflect.field(obj,field);
                         var processed = processField(value, type, tabCount);
+                        //"Object is not a Haxe type so set it to Dynamic"
+                        type = "Dynamic";
                         temp.push('${indent(tabCount + 1)}${field}: ${processed.obj}');
                     }
                     '{\n${temp.join(",\n")}\n${indent(tabCount)}}';
                 case "String": '\"${obj}\"';
                 case _ : obj;
             }
-        }
+        return { type: type, obj: obj };
     }
 
     private static function toUpperCamel(string: String, ?seperator: String = ""): String {
