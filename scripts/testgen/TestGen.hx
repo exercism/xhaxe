@@ -257,7 +257,7 @@ class Test extends buddy.SingleSuite {
         if (type == null) {
             //if type comes back null attempt to set it properly
             //this is pretty jank and should probably be refactored to use Std.isOfType
-            var isNumeric = ~/^\d+$/;
+            var isNumeric = ~/^-\d+|^\d+$/;
             if (isNumeric.match('${obj}')) {
                 if ('${obj}'.contains(".")) {
                     type = "Float";
@@ -297,9 +297,25 @@ class Test extends buddy.SingleSuite {
                     for (child in cast(obj, Array<Dynamic>)) {
                         var processed = processField(child, type, tabCount); 
                         type = 'Array<${processed.type}>';
-                        temp.push('${indent(tabCount + 1)}${processed.obj}');
+
+                        if (type == 'Array<Int>' || type == 'Array<Float>') {
+                            if (temp.length == 0) {
+                                temp.push('${indent(tabCount + 1)}${processed.obj}');
+                            } else {
+                                temp.push('${processed.obj}');
+                            }
+                        }
+                        else {
+                            temp.push('${indent(tabCount + 1)}${processed.obj}');
+                        }
                     } 
-                    '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
+                    trace(type);
+                    trace(type == 'Array<Int>');
+                    if (type == 'Array<Int>' || type == 'Array<Float>') {
+                        '[\n${temp.join(", ")}\n${indent(tabCount)}]';
+                    } else {
+                        '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
+                    }
                 case "Object": 
                     var temp = new Array<Dynamic>();
                     for (field in Reflect.fields(obj)) {
