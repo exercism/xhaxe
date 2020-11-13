@@ -257,13 +257,16 @@ class Test extends buddy.SingleSuite {
                 case "Array":  
                     var temp = new Array<Dynamic>();
                     for (child in cast(obj, Array<Dynamic>)) {
-                        temp.push('${indent(tabCount + 1)}${processField(child, type, tabCount).obj}');
+                        var processed = processField(child, type, tabCount); 
+                        temp.push('${indent(tabCount + 1)}${processed.obj}');
                     } 
                     '[\n${temp.join(",\n")}\n${indent(tabCount)}]';
                 case "Object": 
                     var temp = new Array<Dynamic>();
                     for (field in Reflect.fields(obj)) {
-                        temp.push('${indent(tabCount + 1)}${field}: ${processField(Reflect.field(obj, field), type, tabCount)).obj}');
+                        var value = Reflect.field(obj,field);
+                        var processed = processField(value, type, tabCount);
+                        temp.push('${indent(tabCount + 1)}${field}: ${processed.obj}');
                     }
                     '{\n${temp.join(",\n")}\n${indent(tabCount)}}';
                 case "String": '\"${obj}\"';
