@@ -54,6 +54,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "resistor-color-duo",
+      "uuid": "f5119a7e-762b-40aa-ae93-3922197e9029",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "arrays"
+      ]
     }
   ]
 }
