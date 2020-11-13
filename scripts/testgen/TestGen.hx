@@ -20,6 +20,7 @@ class ::exercise:: {
     }
 }"
     );
+
     static var testTmpl = new Template(
 "package;
 
@@ -27,11 +28,16 @@ using buddy.Should;
 
 class Test extends buddy.SingleSuite {
     public function new() {
-        describe(\"::exercise::\", {
-        ::testCases::});
+        ::stories::
     }
 }"
     );
+
+    static var storyTmpl = new Template(
+        "describe(\"::story::\", {
+        ::testCases::});"
+    );
+
     static var testCaseTmpl = new Template(
         "    it(\"::testCase::\", {
                 ::testCriteria::
@@ -50,9 +56,9 @@ class Test extends buddy.SingleSuite {
             return;
         }
 
-        exercise   = Sys.args()[0];
-        mainMethod = Sys.args()[1];
-        mainArgs   = Sys.args()[2];
+        exercise       = Sys.args()[0];
+        mainMethod     = Sys.args()[1];
+        mainArgs       = Sys.args()[2];
         shouldAssert   = Sys.args()[3];
 
         //pull in files from github
@@ -89,10 +95,25 @@ class Test extends buddy.SingleSuite {
         meta.push("[canonical-tests]\n\n");
 
         var problemSpec = Json.parse(dataJson);
-        var testCases = new Array<String>();
+        var testCases = new Map<String, Array<String>>();
+        var stories = new Array<String>();
         //populate test cases
-        generateTests(cast (problemSpec.cases, Array<Dynamic>), testCases, meta); 
+        generateTests(cast (problemSpec.cases, Array<Dynamic>), stories, testCases, meta); 
       
+        for (i in 0...stories.length) {
+            stories[i] = storyTmpl.execute( {
+                    story: stories[i],
+                    testCases: testCases.get(stories[i]).join("")
+                }
+            );
+        }
+        // for (story in testCases.keys()) {
+        //     stories.push(storyTmpl.execute( {
+        //             story: story,
+        //             testCases: testCases.get(story).join("")
+        //         })
+        //     );
+        // }
 
         //create String array for README; add exercise as title 
         var readme = new Array<String>();
@@ -139,8 +160,7 @@ class Test extends buddy.SingleSuite {
         //create Test.hx file
         Sys.println('Creating test/Test.hx');
         File.saveContent('${dir}test/Test.hx', testTmpl.execute( {
-                exercise: toUpperCamel(exercise, " "), 
-                testCases: testCases.join("")
+                stories: stories.join("\n\t\t")
             }
         ));
 
@@ -154,9 +174,17 @@ class Test extends buddy.SingleSuite {
     }
 
 
-    private static function generateTests(cases: Array<Dynamic>, testCases: Array<String>, meta: Array<String>) {
+    private static function generateTests(cases: Array<Dynamic>, stories: Array<String>, testCases: Map<String, Array<String>>, meta: Array<String>, ?story: String) {
         for(testCase in cases) {
             if (testCase.cases == null) {
+                if (story == null) {
+                    story = toUpperCamel(exercise, " ");
+                }
+                if (story != null && !testCases.exists(story)) {
+                    stories.push(story);
+                    testCases.set(story, new Array<String>());
+                } 
+
                 //add description to .meta/test.toml
                 meta.push('# ${testCase.description}\n');
                 //add uuid in double quotes = true to .meta/test.toml
@@ -170,11 +198,12 @@ class Test extends buddy.SingleSuite {
 
                 var expected = processField(testCase.expected);
   
+                //should probably change the assert based on return type from processField 
                 var testCriteria ='${toUpperCamel(exercise)}.${mainMethod}(${inputs.join(", ")}).should.${shouldAssert}(${expected});'; 
-                if (testCases.length != 0) {
+                if (testCases.get(story).length != 0) {
                     testCriteria = 'pending("Skipping");\n\t\t\t\t' + testCriteria;
                 }
-                testCases.push(                        
+                testCases.get(story).push(                        
                     testCaseTmpl.execute( {
                       testCase: testCase.description,
                       testCriteria: testCriteria 
@@ -182,25 +211,38 @@ class Test extends buddy.SingleSuite {
                 );
             } else {
                 //if case has more cases continute to traverse
-                generateTests(cast (testCase.cases, Array<Dynamic>), testCases, meta);
+                generateTests(cast (testCase.cases, Array<Dynamic>), stories, testCases, meta, testCase.description);
             }
         }
     }
     private static function processField(obj: Dynamic, ?parent: String, ?tabCount: Int = 4): Dynamic {
         var type = Type.getClassName(Type.getClass(obj));
+        // trace(obj + ": " + type);
         if (type == null) {
-           type = Type.getClassName(Type.getClass(Reflect.fields(obj))); 
-           if (type == "Array") {
+            //if type comes back null attempt to set it properly
+            //this is pretty jank and should probably be refactored to use Std.isOfType
+            var isNumeric = ~/^\d+$/;
+            if (isNumeric.match('${obj}')) {
+                type = "Number";
+            }
+            else if ('${obj}' == "true" || '${obj}' == "false") {
+                type = "Bool";
+            }
+            else {
+                type = Type.getClassName(Type.getClass(Reflect.fields(obj))); 
+            }
+            if (type == "Array") {
                type = "Object";
-           } 
-           if (obj == null) {
+            } 
+            if (obj == null) {
                type = "Null";
-           }           
-           if ((type == "Object" || type == "Array") && type == parent) {
-               tabCount += 1;
-           }
+            }           
+            if ((type == "Object" || type == "Array") && type == parent) {
+                tabCount += 1;
+            }
         }
         // trace(obj + ": " + type);
+
         var indent =
             (count) -> {
                 var temp = "";
