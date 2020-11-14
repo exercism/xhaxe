@@ -13,6 +13,19 @@ An example to generate the acronym exercise:
 haxe --run TestGen.hx acronym 
 ```
 
+If you are on Windows you will need to compile it first to a Sys target due an SSL issue.
+
+Neko compile:
+```
+haxe.exe --neko testgen.n --main TestGen.hx
+```
+
+Neko run:
+```
+neko.exe testgen.n anagram
+```
+
+
 Workflow:
 1. Run testgen for new exercise.
 2. Update Example.hx with a solution.
