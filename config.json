@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "clock",
+      "uuid": "4dee213a-0cbb-421e-a99a-fed2e0a2bf3d",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "anonymous-structures",
+        "equality"
+      ]
     }
   ]
 }
