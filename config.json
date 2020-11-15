@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "reverse-string",
+      "uuid": "b41b176d-ac35-44f6-ac27-db373c13a4bf",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "strings",
+        "static-extension"
+      ]
     }
   ]
 }
