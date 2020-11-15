@@ -98,6 +98,19 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "tournament",
+      "uuid": "6ad3fb39-38b5-4e7e-a786-83d745e7471e",
+      "core": true,
+      "unlocked_by": null,
+      "difficulty": 3,
+      "topics": [
+		 "strings",
+		 "parsing",
+		 "anonymous-structures",
+		 "matching"
+      ]
     }
   ]
 }
