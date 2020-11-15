@@ -98,6 +98,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "pangram",
+      "uuid": "ccf3f19d-e57e-46c0-8043-d8359ef050d2",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		 "strings",
+		 "filtering",
+		 "regex"
+      ]
     }
   ]
 }
