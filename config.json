@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+    {
+      "slug": "resistor-color-trio",
+      "uuid": "130f09c4-dd80-4eaa-bc9d-a38dcd065c8e",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		"math",
+		"anonymous-structures"
+      ]
     }
   ]
 }
