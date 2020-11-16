@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "grains",
+      "uuid": "d71ad671-56fd-46cd-9f00-b5eb816fe2b9",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "math",
+        "exception-handling"
+      ]
     }
   ]
 }
