@@ -98,6 +98,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "isogram",
+      "uuid": "81803fd1-20a4-495a-9b0a-c1ffd4fcc25d",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		 "strings",
+		 "filtering",
+		 "regex"
+      ]
     }
   ]
 }
