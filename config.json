@@ -98,6 +98,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "accumulate",
+      "uuid": "3d570a0c-4477-41b2-8675-35cfbc8468da",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "collections",
+        "generics",
+		 "static_extensions"
+      ]
     }
   ]
 }
