@@ -98,6 +98,19 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "binary-search-tree",
+      "uuid": "2db8d89a-bc41-4a38-ac4e-743ab3bb1d6a",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "recursion",
+        "pattern_matching",
+		 "option",
+		 "generics"
+      ]
     }
   ]
 }
