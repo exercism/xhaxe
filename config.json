@@ -98,6 +98,19 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "phone-number",
+      "uuid": "ab220c9b-4358-4ae0-aa71-9e98f57253d9",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "regex",
+        "strings",
+		 "pattern_matching",
+		 "exception_handling"
+      ]
     }
   ]
 }
