@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "scrabble-score",
+      "uuid": "cab2656a-540a-4a83-987a-eed4f12cc380",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "dictionaries",
+        "strings"
+      ]
     }
   ]
 }
