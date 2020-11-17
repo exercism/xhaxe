@@ -98,6 +98,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "flatten-array",
+      "uuid": "ea94c4a3-8cba-4a63-800a-35694bdff63f",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "dynamic",
+        "generics",
+		 "recursion"
+      ]
     }
   ]
 }
