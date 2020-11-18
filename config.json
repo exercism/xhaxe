@@ -98,6 +98,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "largest-series-product",
+      "uuid": "2f370725-4a48-43c1-942c-bafce7ad160a",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "arrays"
+      ]
     }
   ]
 }
