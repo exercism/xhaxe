@@ -98,6 +98,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "etl",
+      "uuid": "dc071752-442e-4029-a565-835f862f471b",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "dictionaries"
+      ]
     }
   ]
 }
