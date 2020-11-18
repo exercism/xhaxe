@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "sum-of-multiples",
+      "uuid": "bf24acf0-31c5-4c71-84ce-9e2f600c2886",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "filtering",
+        "math"
+      ]
     }
   ]
 }
