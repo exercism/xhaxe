@@ -98,6 +98,18 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "sublist",
+      "uuid": "01144b98-9b2f-40fd-a296-2006d0d910b9",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+		"generics",
+		"pattern_matching",
+		"recursion"
+      ]
     }
   ]
 }
