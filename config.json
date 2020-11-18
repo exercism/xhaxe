@@ -98,6 +98,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "series",
+      "uuid": "9155e5de-822d-4615-9aa3-5bfc8eec70db",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "transforming"
+      ]
     }
   ]
 }
