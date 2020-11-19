@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "prime-factors",
+      "uuid": "19ab4444-64ea-4efa-a314-99e4d643355c",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "math",
+        "algorithms"
+      ]
     }
   ]
 }
