@@ -98,6 +98,16 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "triangle",
+      "uuid": "d4e8dd84-75c1-40e9-b028-771dbbcb1c09",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "math"
+      ]
     }
   ]
 }
