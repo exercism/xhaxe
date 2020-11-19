@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "beer-song",
+      "uuid": "9bcc869c-580a-4ec7-9d84-09c97796aff2",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "strings",
+        "recursion"
+      ]
     }
   ]
 }
