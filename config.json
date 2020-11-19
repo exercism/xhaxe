@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "all-your-base",
+      "uuid": "7878e75f-581d-4985-ade8-9ed5638d41e6",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "algorithms",
+        "math"
+      ]
     }
   ]
 }
