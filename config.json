@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "sieve",
+      "uuid": "0c22d0d4-8659-4bd0-9871-9e228405dc8c",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "math",
+        "algorithms"
+      ]
     }
   ]
 }
