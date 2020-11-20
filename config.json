@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "robot-simulator",
+      "uuid": "6f1486bc-70ac-4025-bad8-977f2888215a",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "enumerations",
+        "pattern_matching"
+      ]
     }
   ]
 }
