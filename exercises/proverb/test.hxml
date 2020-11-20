@@ -1,0 +1,5 @@
+-x Test
+-lib buddy 
+-cp src/
+-cp test/
+
