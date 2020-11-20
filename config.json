@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "strain",
+      "uuid": "cbbea747-8b38-4956-8d1e-3555c9978f14",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "static_extensions",
+        "generics"
+      ]
     }
   ]
 }
