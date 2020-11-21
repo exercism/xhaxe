@@ -98,6 +98,17 @@
         "filtering",
         "strings"
       ]
+    },
+	{
+      "slug": "yacht",
+      "uuid": "f4c0d163-44ee-4d4b-9316-4df8b4ae8558",
+      "core": false,
+      "unlocked_by": null,
+      "difficulty": 1,
+      "topics": [
+        "strings",
+        "pattern_matching"
+      ]
     }
   ]
 }
