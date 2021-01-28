@@ -140,6 +140,17 @@
          "regex",
          "strings"
        ]
+    },
+ 	  {
+       "slug": "matrix",
+       "uuid": "9071338c-b202-44f0-853f-8aa5f2bf8d90",
+       "core": false,
+       "unlocked_by": null,
+       "difficulty": 1,
+       "topics": [
+         "arrays",
+         "strings"
+       ]
     }
   ]
 }
