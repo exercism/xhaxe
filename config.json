@@ -140,6 +140,16 @@
          "regex",
          "strings"
        ]
+    },
+ 	  {
+       "slug": "dnd-character",
+       "uuid": "a02ff2ef-a340-40b5-a940-a67c4ce891e0",
+       "core": false,
+       "unlocked_by": null,
+       "difficulty": 1,
+       "topics": [
+         "randomness"
+       ]
     }
   ]
 }
