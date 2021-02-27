@@ -5,10 +5,10 @@
       "exercism_username": "mohammadfoda"
     }
   ],
-  "forked_from": ["csharp/booleans"],
+  "forked_from": ["csharp/AnnalynsInfiltration"],
   "files": {
     "solution": ["AnnalynsInfiltration.hx"],
-    "test": ["Tests.hx"],
+    "test": ["Test.hx"],
     "exemplar": [".meta/Exemplar.hx"]
   }
 }
