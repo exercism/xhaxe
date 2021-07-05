@@ -1,6 +1,6 @@
 [
   {
-    "description": "string",
+    "description": "Strings",
     "url": "https://code.haxe.org/category/beginner/strings.html"
   },
   {
@@ -8,11 +8,11 @@
     "url": "https://api.haxe.org/String.html"
   },
   {
-    "description": "escaping",
+    "description": "Escaping",
     "url": "https://haxe.org/manual/std-String-literals.html"
   },
   {
-    "description": "plus-operator",
+    "description": "Plus Operator",
     "url": "https://haxe.org/manual/expression-operators-binops.html#string-concatenation-operator"
   }
 ]

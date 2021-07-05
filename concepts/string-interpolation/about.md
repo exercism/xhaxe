@@ -1,4 +1,4 @@
-While manually concatenating strings in Haxe is possible, Haxe supports [string interpolation][interpolation], which provides a shorter and more convenient syntax:
+While manually concatenating strings in Haxe is possible, Haxe supports [string interpolation][string-interpolation], which provides a shorter and more convenient syntax:
 
 ```haxe
 var x = 42;
@@ -27,5 +27,5 @@ trace('the price is $$42'); // outputs: the price is $42
 
 Lastly, note that string interpolation is a compile-time feature that has no impact on runtime performance. Internally, the Haxe compiler generates the equivalent code as manual concatenation.
 
-[interpolation]: https://haxe.org/manual/lf-string-interpolation.html
+[string-interpolation]: https://haxe.org/manual/lf-string-interpolation.html
 [strings]: https://haxe.org/manual/std-String.html

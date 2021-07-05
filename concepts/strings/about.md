@@ -1,6 +1,6 @@
 # About
 
-[Strings][string] in Haxe are immutable objects representing text as a sequence of Unicode characters (letters, digits, punctuation, etc.). Double quotes are used to define a `string` instance:
+[Strings][strings] in Haxe are immutable objects representing text as a sequence of Unicode characters (letters, digits, punctuation, etc.). Double quotes are used to define a `string` instance:
 
 ```haxe
 var fruit:String = "Apple";
@@ -36,7 +36,7 @@ trace('HELLO ${name.toUpperCase()}!');
 // => "HELLO JANE!"
 ```
 
-[string]: https://code.haxe.org/category/beginner/strings.html
+[strings]: https://code.haxe.org/category/beginner/strings.html
 [string-api]: https://api.haxe.org/String.html
 [escaping]: https://haxe.org/manual/std-String-literals.html
 [plus-operator]: https://haxe.org/manual/expression-operators-binops.html#string-concatenation-operator

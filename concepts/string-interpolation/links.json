@@ -1,10 +1,10 @@
 [
   {
-    "url": "https://haxe.org/manual/std-String.html",
-    "description": "string"
+    "description": "String Interpolation",
+    "url": "https://haxe.org/manual/lf-string-interpolation.html"
   },
   {
-    "url": "https://haxe.org/manual/lf-string-interpolation.html",
-    "description": "String interpolation"
+    "description": "Strings",
+    "url": "https://haxe.org/manual/std-String.html"
   }
 ]

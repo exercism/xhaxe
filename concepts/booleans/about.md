@@ -1,4 +1,4 @@
-Booleans in Haxe are represented by the `Bool` type, whose values can be either `true` or `false`.
+[Booleans][booleans] in Haxe are represented by the `Bool` type, whose values can be either `true` or `false`.
 
 Haxe supports three [boolean operators][operators]: `!` (unary NOT), `&&` (binary AND), and `||` (binary OR)
 
@@ -19,5 +19,6 @@ Enclosing expressions in parantheses `()` allows overriding these precedence rul
 !(true && false) // => true
 ```
 
+[booleans]: https://haxe.org/manual/types-bool.html
 [operators]: https://haxe.org/manual/expression-operators-binops.html
 [precedence]: https://haxe.org/manual/expression-operators-precedence.html

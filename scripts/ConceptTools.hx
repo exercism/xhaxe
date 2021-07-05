@@ -60,7 +60,7 @@ class ConceptTools {
 		function extract(reg:EReg)
 			while (reg.match(md)) {
 				var desc = reg.matched(1);
-				desc = desc.split(" ").join("-").toLowerCase(); // slug format
+				desc = titleCase(desc.replace("-", " "));
 
 				var url = reg.matched(2);
 				links.push({description: desc, url: url});
@@ -74,6 +74,13 @@ class ConceptTools {
 		extract(reg2);
 
 		return links;
+	}
+
+	static function titleCase(str:String):String {
+		function capitalize(s:String)
+			return s.charAt(0).toUpperCase() + s.substr(1);
+
+		return str.split(" ").map(capitalize).join(" ");
 	}
 
 	static function equals(a:MdLink, b:MdLink):Bool {
